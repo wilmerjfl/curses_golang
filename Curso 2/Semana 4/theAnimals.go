@@ -7,64 +7,66 @@ import ("fmt"
 )
 
 type Animal interface {
-	Eat() string
-	Move() string
-	Speak() string
-}
-
-type newanimal struct {
-	name string
-	class string
+	Eat()
+	Move()
+	Speak()
 }
 
 type cow struct {
-	food, locomotion, sound string
+	name string
 }
 type bird struct {
-	food, locomotion, sound string
+	name string
 }
 type snake struct {
-	food, locomotion, sound string
+	name string
 }
-
+func (n *cow) Name(name string) {
+	n.name = name
+}
+func (n *bird) Name(name string) {
+	n.name = name
+}
+func (n *snake) Name(name string) {
+	n.name = name
+}
 func (n cow) Eat() {
-	println(n.food)
+	println("grass")
 }
 func (n cow) Move() {
-	println(n.locomotion)
+	println("walk")
 }
 func (n cow) Speak() {
-	println(n.sound)
+	println("moo")
 }
 func (n bird) Eat() {
-	println(n.food)
+	println("worms")
 }
 func (n bird) Move() {
-	println(n.locomotion)
+	println("fly")
 }
 func (n bird) Speak() {
-	println(n.sound)
+	println("peep")
 }
 func (n snake) Eat() {
-	println(n.food)
+	println("mice")
 }
 func (n snake) Move() {
-	println(n.locomotion)
+	println("slither")
 }
 func (n snake) Speak() {
-	println(n.sound)
+	println("hsss")
 }
 
 func main() {
-	slice := make([] newanimal, 0)
+	
+	animals := make(map[string] Animal)
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("Please enter a command, must be:")
 	fmt.Println("newanimal animal type")
 	fmt.Println("Or")
 	fmt.Println("query animal action")
-	Cow := cow{"grass","walk","moo"}
-	Bird := bird{"worms","fly","peep"}
-	Snake := snake{"mice","slither","hsss"}
+
 	for {
 		fmt.Printf("> ")
 		scanner.Scan()
@@ -73,43 +75,24 @@ func main() {
 			animal := s.Split(aux," ")
 			command, name, comm := animal[0], animal[1], animal[2]
 			if (command == "newanimal"){
-				slice = append(slice, NewAnimal(name, comm))
+				switch comm {
+				case "cow":
+					animals[name] = cow{}
+				case "bird":
+					animals[name] = bird{}
+				case "snake":
+					animals[name] = snake{}
+				}
+				
 			} else if (command == "query"){
 
-				for _, e := range(slice){
-					if (e.name) == name {
-
-						switch e.class {
-						case "cow":
-							switch comm{
-							case "eat":
-								Cow.Eat()
-							case "move":
-								Cow.Move()
-							case "speak":
-								Cow.Speak()
-							}
-						case "bird":
-							switch comm{
-							case "eat":
-								Bird.Eat()
-							case "move":
-								Bird.Move()
-							case "speak":
-								Bird.Speak()
-							}
-						case "snake":
-							switch comm{
-							case "eat":
-								Snake.Eat()
-							case "move":
-								Snake.Move()
-							case "speak":
-								Snake.Speak()
-							}
-						}
-					}
-					
+				switch comm{
+				case "eat":
+					animals[name].Eat()
+				case "move":
+					animals[name].Move()
+				case "speak":
+					animals[name].Speak()
 				}
 			}
 		} else {
@@ -117,9 +100,4 @@ func main() {
 		}
 	
 	}
-}
-
-func NewAnimal(name, class string) newanimal {
-	a := newanimal{name, class}
-	return a
 }
